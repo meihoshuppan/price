@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ポスター費用お見積もり | めいほう出版</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+  /* --- ベース設定 --- */
+  :root {
+    --font-jp: 'Zen Kaku Gothic New', "游ゴシック Medium", "游ゴシック体", "Yu Gothic Medium", YuGothic, "ヒラギノ角ゴ ProN", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+    --font-en: 'Jost', 'Zen Kaku Gothic New', "游ゴシック Medium", "游ゴシック体", "Yu Gothic Medium", YuGothic, "ヒラギノ角ゴ ProN", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+
+    /* カラーパレット */
+    --bg-color: #faf9f7; 
+    --text-main: #33322e; 
+    --text-light: #7a7770;
+    --border-color: #e2dfd8;
+    --accent-color: #0092b4; 
+    --active-bg: #f2f9fb;   
+    --white: #ffffff;
+  }
+
+  body { 
+    font-family: var(--font-en); 
+    padding: 60px 20px; 
+    background-color: var(--bg-color); 
+    color: var(--text-main); 
+    margin: 0;
+    letter-spacing: 0.04em;
+    line-height: 1.6;
+  }
+
+  /* メインコンテナ */
+  .calculator { 
+    max-width: 640px; 
+    margin: auto; 
+    background: var(--white); 
+    padding: 48px 40px; 
+    border-radius: 4px; 
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02); 
+  }
+
+  h2 {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 40px;
+    letter-spacing: 0.1em;
+    color: var(--text-main);
+  }
+
+  .section-title { 
+    font-size: 1rem; 
+    font-weight: 700; 
+    color: var(--text-main); 
+    margin-bottom: 12px; 
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .btn-group { 
+    display: flex; 
+    gap: 8px; 
+    margin-bottom: 32px; 
+    flex-wrap: wrap; 
+  }
+
+  /* 選択ボタン */
+  .select-btn { 
+    flex: 1; 
+    min-width: calc(25% - 8px); 
+    padding: 12px; 
+    border: 1px solid var(--border-color); 
+    background: var(--white); 
+    cursor: pointer; 
+    border-radius: 2px; 
+    font-size: 0.95rem;
+    font-family: var(--font-en);
+    font-weight: 500;
+    color: var(--text-light); 
+    transition: all 0.3s ease; 
+    text-align: center; 
+  }
+  .select-btn:hover { 
+    background: var(--active-bg); 
+    color: var(--text-main);
+    border-color: #b3dfea; 
+  }
+  .select-btn.active { 
+    background: var(--accent-color); 
+    color: var(--white); 
+    border-color: var(--accent-color); 
+  }
+
+  /* プルダウンのスタイル */
+  .select-dropdown {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 2px;
+    font-size: 0.95rem;
+    font-family: var(--font-en);
+    font-weight: 500;
+    color: var(--text-main);
+    background-color: var(--white);
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-bottom: 32px;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%237a7770'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    background-size: 16px;
+  }
+  .select-dropdown:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(0, 146, 180, 0.1); 
+  }
+
+  /* 部数コントロール */
+  .qty-control { 
+    display: inline-flex; 
+    align-items: center; 
+    border: 1px solid var(--border-color); 
+    border-radius: 2px; 
+    margin-bottom: 32px; 
+    background: var(--white);
+    transition: border-color 0.3s;
+  }
+  .qty-control:focus-within {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(0, 146, 180, 0.1);
+  }
+  .qty-btn { 
+    width: 48px; 
+    height: 48px; 
+    border: none; 
+    background: transparent; 
+    cursor: pointer; 
+    font-size: 18px; 
+    color: var(--text-light); 
+    transition: all 0.2s; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+  }
+  .qty-btn:hover { 
+    background: var(--active-bg); 
+    color: var(--accent-color); 
+  }
+  #qty-val { 
+    font-size: 1.1rem; 
+    font-weight: 600;
+    width: 100px; 
+    text-align: center; 
+    color: var(--text-main); 
+  }
+
+  /* 無効化（グレーアウト）時 */
+  .print-options-wrapper {
+    transition: opacity 0.4s ease;
+  }
+  .disabled-section {
+    opacity: 0.3;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  /* 金額表示エリア */
+  .price-display-wrapper {
+    margin-top: 40px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+  }
+  .price-label {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-light);
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+  }
+  .price-display { 
+    font-family: var(--font-en);
+    font-size: 3.2rem; 
+    font-weight: 600;
+    color: var(--text-main); 
+    margin: 0; 
+    line-height: 1;
+    letter-spacing: 0.02em;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+  }
+  .price-suffix {
+    font-family: var(--font-jp);
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: var(--text-main);
+    margin-left: 4px;
+  }
+  
+  /* 割引オプション（オレンジ系） */
+  .discount-option {
+    display: inline-flex;
+    align-items: flex-start; 
+    justify-content: flex-start;
+    background-color: #fff8eb; 
+    padding: 16px 20px;
+    margin-top: 16px; /* 価格との間隔 */
+    border-radius: 4px;
+    border: 1px solid #f5c277; 
+    cursor: pointer;
+    font-family: var(--font-jp);
+    font-size: 0.95rem;
+    color: var(--text-main);
+    transition: all 0.2s ease;
+    text-align: left;
+    width: 100%; 
+    box-sizing: border-box;
+  }
+  .discount-option:hover {
+    background-color: #ffeed4; 
+  }
+  /* ▼ 追加：2つ目以降の割引オプションのマージンを狭くする ▼ */
+  .discount-option + .discount-option {
+    margin-top: 6px; 
+  }
+
+  .discount-option input[type="checkbox"] {
+    margin-right: 12px;
+    margin-top: 4px; 
+    width: 18px;
+    height: 18px;
+    accent-color: #e65c00; 
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .discount-text-wrapper {
+      line-height: 1.5; 
+      font-weight: 500;
+  }
+
+  /* 注記のスタイル（リスト形式） */
+  .price-note-box {
+    margin-top: 24px;
+    text-align: left;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 4px;
+    border: 1px solid #eaeaea;
+  }
+  .price-note-title {
+    font-family: var(--font-jp);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 8px;
+  }
+  .price-note-list {
+    margin: 0;
+    padding-left: 20px;
+    font-family: var(--font-jp);
+    font-size: 0.8rem;
+    color: var(--text-light);
+    line-height: 1.6;
+  }
+  .price-note-list li {
+    margin-bottom: 4px;
+  }
+  .price-note-footer {
+     font-family: var(--font-jp);
+     font-size: 0.8rem;
+     color: var(--text-main);
+     margin-top: 12px;
+     font-weight: 500;
+  }
+
+  /* CTAセクションのスタイル */
+  .cta-wrapper {
+    margin-top: 48px;
+    padding: 32px 24px;
+    background-color: var(--active-bg);
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid #b3dfea;
+  }
+  .cta-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 12px;
+  }
+  .cta-text {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+  .cta-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 24px;
+    border-radius: 40px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--white);
+    transition: all 0.3s ease;
+    min-width: 200px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+  .cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+  }
+  .cta-line {
+    background-color: #06C755;
+  }
+  .cta-line:hover {
+    background-color: #05b34c;
+  }
+  .cta-insta {
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  }
+  .cta-insta:hover {
+    opacity: 0.9;
+  }
+
+  /* スマホ対応 */
+  @media (max-width: 480px) {
+    .calculator { padding: 32px 20px; }
+    .select-btn { min-width: calc(50% - 4px); }
+    .price-display { font-size: 2.8rem; }
+    .price-suffix { font-size: 1.4rem; }
+    .discount-option { font-size: 0.85rem; padding: 12px 16px; align-items: flex-start;}
+    .discount-option input[type="checkbox"] { margin-top: 2px;} 
+    .discount-option + .discount-option { margin-top: 6px; }
+    .cta-buttons { flex-direction: column; }
+    .cta-btn { width: 100%; min-width: auto; box-sizing: border-box; }
+  }
+</style>
+</head>
+<body>
+
+<div class="calculator">
+
+    <h2>お見積もりシミュレーション</h2>
+
+    <div class="section-title">ご依頼内容</div>
+    <select id="service-type" class="select-dropdown" onchange="updateState('serviceType', this.value)">
+        <option value="design_print">デザイン制作 ＋ 印刷</option>
+        <option value="design_only">デザイン制作のみ</option>
+    </select>
+    
+    <div class="section-title">ポスターサイズ</div>
+    <div class="btn-group" id="size-selector">
+        <button class="select-btn active" onclick="updateState('size', 'A2')">A2</button>
+        <button class="select-btn" onclick="updateState('size', 'A1')">A1</button>
+        <button class="select-btn" onclick="updateState('size', 'B3')">B3</button>
+        <button class="select-btn" onclick="updateState('size', 'B2')">B2</button>
+    </div>
+
+    <div id="print-options-wrapper" class="print-options-wrapper">
+        <div class="section-title">用紙（135kg）</div>
+        <div class="btn-group" id="paper-selector">
+            <button class="select-btn active" onclick="updateState('paper', 'coat')">コート紙</button>
+            <button class="select-btn" onclick="updateState('paper', 'matte')">マットコート紙</button>
+            <button class="select-btn" onclick="updateState('paper', 'fine')">上質紙</button>
+        </div>
+
+        <div class="section-title">印刷部数</div>
+        <div class="qty-control">
+            <button class="qty-btn" onclick="stepQuantity(-1)">−</button>
+            <span id="qty-val">10部</span>
+            <button class="qty-btn" onclick="stepQuantity(1)">＋</button>
+        </div>
+    </div>
+
+    <div class="section-title">データ納品オプション</div>
+    <select id="data-delivery" class="select-dropdown" onchange="updateState('dataDelivery', this.value)">
+        <option value="none">希望しない（印刷物のみ納品）</option>
+        <option value="pdf">印刷用PDFデータをお渡し</option>
+        <option value="ai">Illustratorデータ（アウトライン済）</option>
+        <option value="ai_edit">Illustratorデータ（編集可能）</option>
+    </select>
+
+    <div class="price-display-wrapper">
+        <div class="price-label">概算費用（税込）</div>
+        <div class="price-display">
+            ¥<span id="final-price" style="font-size: inherit; color: inherit; font-family: inherit; margin-left: 0; font-weight: inherit;">0</span><span class="price-suffix">〜</span>
+        </div>
+        
+        <label class="discount-option">
+            <input type="checkbox" id="local-discount" onchange="updateState('isLocalDiscount', this.checked)">
+            <span class="discount-text-wrapper">
+                地域おこしや過疎地・地方活性化のための個人や任意団体の取り組みである
+            </span>
+        </label>
+
+        <label class="discount-option">
+            <input type="checkbox" id="online-discount" onchange="updateState('isOnlineDiscount', this.checked)">
+            <span class="discount-text-wrapper">
+                完全オンラインやりとり（メール、LINE、Zoom）を希望
+            </span>
+        </label>
+
+        <div class="price-note-box">
+            <div class="price-note-title">※以下の要因により、実際の金額は変動する場合がございます。</div>
+            <ul class="price-note-list">
+                <li>特殊な用紙・サイズへの変更や、特殊加工（PP加工、箔押しなど）</li>
+                <li>お急ぎの対応（特急料金）</li>
+                <li>デザインの修正回数や、複雑なイラスト・図表作成などの工数</li>
+            </ul>
+            <div class="price-note-footer">
+                詳細はお打ち合わせ後に、改めて正式なお見積もりをご案内いたします。
+            </div>
+        </div>
+    </div>
+
+    <div class="cta-wrapper">
+        <div class="cta-title">お見積もり・ご相談はこちら</div>
+        <div class="cta-text">
+            「こんなデザインできる？」「まずはざっくり相談したい」など、<br>
+            公式LINEまたはInstagramのDMより、お気軽にお問い合わせください。
+        </div>
+        <div class="cta-buttons">
+            <a href="https://lin.ee/1WHsHXo" target="_blank" rel="noopener noreferrer" class="cta-btn cta-line">LINEで相談する</a>
+            <a href="https://www.instagram.com/meihoshuppan/" target="_blank" rel="noopener noreferrer" class="cta-btn cta-insta">Instagramで相談する</a>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // ==========================================
+    // ▼ 設定と価格マスター
+    // ==========================================
+    const CONFIG = {
+        PAPER_SURCHARGE: 1650, 
+        DATA_FEES: { none: 0, pdf: 5000, ai: 15000, ai_edit: 30000 },
+        LOCAL_DISCOUNT_RATE: 0.8,  // 20%OFF
+        ONLINE_DISCOUNT_RATE: 0.9  // 10%OFF
+    };
+
+    const DESIGN_PRICE = {
+        A2: 30000, A1: 40000,
+        B3: 25000, B2: 35000
+    };
+
+    const PRINT_PRICE = {
+        A2: { 10: 12540, 50: 13340, 100: 14320, 300: 15590, 3000: 39950 },
+        A1: { 10: 12410, 50: 13820, 100: 15590, 300: 17770, 3000: 60160 },
+        B3: { 10: 14460, 50: 15060, 100: 15800, 300: 16790, 3000: 35210 },
+        B2: { 10: 11840, 50: 12890, 100: 14220, 300: 15890, 3000: 47700 }
+    };
+
+    // ==========================================
+    // ▼ 状態管理と計算ロジック
+    // ==========================================
+    let state = {
+        serviceType: 'design_print',
+        size: 'A2', 
+        paper: 'coat', 
+        qty: 10,       
+        dataDelivery: 'none',
+        isLocalDiscount: false,
+        isOnlineDiscount: false
+    };
+
+    let currentDisplayPrice = 0;
+    let animationId = null;
+
+    function updateState(key, val) {
+        state[key] = val;
+        
+        // 特殊なUI連動処理
+        if (key === 'serviceType') {
+            const printWrapper = document.getElementById('print-options-wrapper');
+            const dataSelect = document.getElementById('data-delivery');
+            if (val === 'design_only') {
+                printWrapper.classList.add('disabled-section');
+                if (state.dataDelivery === 'none') {
+                    dataSelect.value = 'pdf';
+                    state.dataDelivery = 'pdf';
+                }
+                dataSelect.options[0].disabled = true;
+            } else {
+                printWrapper.classList.remove('disabled-section');
+                dataSelect.options[0].disabled = false;
+            }
+        }
+        
+        if (key === 'size' && state.qty > 3000) {
+            state.qty = 3000;
+            updateQtyUI();
+        }
+        
+        updateButtonActiveStates();
+        calculate();
+    }
+
+    function updateButtonActiveStates() {
+        const sizeBtns = document.getElementById('size-selector').querySelectorAll('.select-btn');
+        sizeBtns.forEach(b => b.classList.toggle('active', b.innerText === state.size));
+        
+        const paperMap = { 'coat': 'コート紙', 'matte': 'マットコート紙', 'fine': '上質紙' };
+        const paperBtns = document.getElementById('paper-selector').querySelectorAll('.select-btn');
+        paperBtns.forEach(b => b.classList.toggle('active', b.innerText === paperMap[state.paper]));
+    }
+
+    function stepQuantity(direction) {
+        let step = state.qty >= 100 ? 100 : 10;
+        let next = state.qty + (direction * step);
+        
+        if (next < 10) next = 10;
+        if (next > 3000) next = 3000;
+
+        state.qty = next;
+        updateQtyUI();
+        calculate();
+    }
+
+    function updateQtyUI() {
+        document.getElementById('qty-val').innerText = `${state.qty.toLocaleString()}部`;
+    }
+
+    function interpolate(table, qty) {
+        const points = Object.keys(table).map(Number).sort((a, b) => a - b);
+        if (table[qty]) return table[qty];
+        if (qty <= points[0]) return table[points[0]];
+        if (qty >= points[points.length - 1]) return table[points[points.length - 1]];
+
+        let lower = points[0], upper = points[points.length - 1];
+        for (let i = 0; i < points.length - 1; i++) {
+            if (qty > points[i] && qty < points[i+1]) {
+                lower = points[i];
+                upper = points[i+1];
+                break;
+            }
+        }
+        const ratio = (qty - lower) / (upper - lower);
+        return table[lower] + (table[upper] - table[lower]) * ratio;
+    }
+
+    function calculate() {
+        // 1. 基本料金の算出
+        let baseFee = DESIGN_PRICE[state.size];
+        if (state.serviceType === 'design_print') {
+            baseFee += interpolate(PRINT_PRICE[state.size], state.qty);
+        }
+
+        // 2. 割引の適用（基本料金に対してのみ）
+        if (state.isLocalDiscount) baseFee *= CONFIG.LOCAL_DISCOUNT_RATE;
+        if (state.isOnlineDiscount) baseFee *= CONFIG.ONLINE_DISCOUNT_RATE;
+
+        // 3. オプション料金の加算（割引対象外）
+        let paperSurcharge = (state.serviceType === 'design_print' && state.paper !== 'coat') ? CONFIG.PAPER_SURCHARGE : 0;
+        let dataDeliveryFee = CONFIG.DATA_FEES[state.dataDelivery];
+        
+        let total = baseFee + paperSurcharge + dataDeliveryFee;
+
+        // 4. 100円単位で四捨五入
+        total = Math.round(total / 100) * 100;
+
+        animatePrice(total, 400);
+    }
+
+    function animatePrice(targetPrice, duration) {
+        const el = document.getElementById('final-price');
+        const startPrice = currentDisplayPrice;
+        const startTime = performance.now();
+        if (animationId) cancelAnimationFrame(animationId);
+
+        function update(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+            const current = Math.floor(startPrice + (targetPrice - startPrice) * ease);
+            
+            el.innerText = current.toLocaleString();
+            currentDisplayPrice = current;
+            
+            if (progress < 1) {
+                animationId = requestAnimationFrame(update);
+            } else {
+                el.innerText = targetPrice.toLocaleString();
+            }
+        }
+        animationId = requestAnimationFrame(update);
+    }
+
+    // 初期化実行
+    updateButtonActiveStates();
+    updateQtyUI();
+    calculate(); // 初期計算を実行
+
+</script>
+
+</body>
+</html>
