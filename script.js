@@ -39,7 +39,6 @@ let animationId = null;
 function updateState(key, val) {
     state[key] = val;
     
-    // 特殊なUI連動処理
     if (key === 'serviceType') {
         const printWrapper = document.getElementById('print-options-wrapper');
         const dataSelect = document.getElementById('data-delivery');
@@ -109,23 +108,18 @@ function interpolate(table, qty) {
 }
 
 function calculate() {
-    // 1. 基本料金の算出
     let baseFee = DESIGN_PRICE[state.size];
     if (state.serviceType === 'design_print') {
         baseFee += interpolate(PRINT_PRICE[state.size], state.qty);
     }
 
-    // 2. 割引の適用（基本料金に対してのみ）
     if (state.isLocalDiscount) baseFee *= CONFIG.LOCAL_DISCOUNT_RATE;
     if (state.isOnlineDiscount) baseFee *= CONFIG.ONLINE_DISCOUNT_RATE;
 
-    // 3. オプション料金の加算（割引対象外）
     let paperSurcharge = (state.serviceType === 'design_print' && state.paper !== 'coat') ? CONFIG.PAPER_SURCHARGE : 0;
     let dataDeliveryFee = CONFIG.DATA_FEES[state.dataDelivery];
     
     let total = baseFee + paperSurcharge + dataDeliveryFee;
-
-    // 4. 100円単位で四捨五入
     total = Math.round(total / 100) * 100;
 
     animatePrice(total, 400);
@@ -155,9 +149,30 @@ function animatePrice(targetPrice, duration) {
     animationId = requestAnimationFrame(update);
 }
 
+// ==========================================
+// ▼ モーダル（ポップアップ）制御ロジック
+// ==========================================
+function openCalcModal() {
+    const overlay = document.getElementById('calc-modal-overlay');
+    // モーダルを開く前に一度計算を走らせておく
+    calculate(); 
+    overlay.classList.add('active');
+    // モーダルを開いた時に背景のスクロールを無効化する（スマホで便利）
+    document.body.style.overflow = 'hidden';
+}
+
+function closeCalcModal(event) {
+    // もしイベントが渡されていて、かつクリックされたのが背景じゃないなら何もしない（ツール内クリックは閉じない）
+    if (event && event.target.id !== 'calc-modal-overlay') return;
+    
+    const overlay = document.getElementById('calc-modal-overlay');
+    overlay.classList.remove('active');
+    // 背景のスクロールを有効に戻す
+    document.body.style.overflow = '';
+}
+
 // 初期化実行
 window.addEventListener('DOMContentLoaded', () => {
     updateButtonActiveStates();
     updateQtyUI();
-    calculate(); // 初期計算を実行
 });
