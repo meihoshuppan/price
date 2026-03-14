@@ -11,100 +11,93 @@
 </head>
 <body>
 
-<div style="text-align: center; margin-top: 100px;">
-    <button class="open-modal-btn" onclick="openCalcModal()">ポスター料金をシミュレーションする</button>
-</div>
+<div class="calculator">
 
-<div id="calc-modal-overlay" class="modal-overlay" onclick="closeCalcModal(event)">
+    <h2>お見積もりシミュレーション</h2>
+
+    <div class="section-title">ご依頼内容</div>
+    <select id="service-type" class="select-dropdown" onchange="updateState('serviceType', this.value)">
+        <option value="design_print">デザイン制作 ＋ 印刷</option>
+        <option value="design_only">デザイン制作のみ</option>
+    </select>
     
-    <div class="calculator" onclick="event.stopPropagation()">
-        <button class="close-modal-btn" onclick="closeCalcModal()">×</button>
+    <div class="section-title">ポスターサイズ</div>
+    <div class="btn-group" id="size-selector">
+        <button class="select-btn active" onclick="updateState('size', 'A2')">A2</button>
+        <button class="select-btn" onclick="updateState('size', 'A1')">A1</button>
+        <button class="select-btn" onclick="updateState('size', 'B3')">B3</button>
+        <button class="select-btn" onclick="updateState('size', 'B2')">B2</button>
+    </div>
 
-        <h2>お見積もりシミュレーション</h2>
+    <div id="print-options-wrapper" class="print-options-wrapper">
+        <div class="section-title">用紙（135kg）</div>
+        <div class="btn-group" id="paper-selector">
+            <button class="select-btn active" onclick="updateState('paper', 'coat')">コート紙</button>
+            <button class="select-btn" onclick="updateState('paper', 'matte')">マットコート紙</button>
+            <button class="select-btn" onclick="updateState('paper', 'fine')">上質紙</button>
+        </div>
 
-        <div class="section-title">ご依頼内容</div>
-        <select id="service-type" class="select-dropdown" onchange="updateState('serviceType', this.value)">
-            <option value="design_print">デザイン制作 ＋ 印刷</option>
-            <option value="design_only">デザイン制作のみ</option>
-        </select>
+        <div class="section-title">印刷部数</div>
+        <div class="qty-control">
+            <button class="qty-btn" onclick="stepQuantity(-1)">−</button>
+            <span id="qty-val">10部</span>
+            <button class="qty-btn" onclick="stepQuantity(1)">＋</button>
+        </div>
+    </div>
+
+    <div class="section-title">データ納品オプション</div>
+    <select id="data-delivery" class="select-dropdown" onchange="updateState('dataDelivery', this.value)">
+        <option value="none">希望しない（印刷物のみ納品）</option>
+        <option value="pdf">印刷用PDFデータをお渡し</option>
+        <option value="ai">Illustratorデータ（アウトライン済）</option>
+        <option value="ai_edit">Illustratorデータ（編集可能）</option>
+    </select>
+
+    <div class="price-display-wrapper">
+        <div class="price-label">概算費用（税込）</div>
+        <div class="price-display">
+            ¥<span id="final-price">0</span><span class="price-suffix">〜</span>
+        </div>
         
-        <div class="section-title">ポスターサイズ</div>
-        <div class="btn-group" id="size-selector">
-            <button class="select-btn active" onclick="updateState('size', 'A2')">A2</button>
-            <button class="select-btn" onclick="updateState('size', 'A1')">A1</button>
-            <button class="select-btn" onclick="updateState('size', 'B3')">B3</button>
-            <button class="select-btn" onclick="updateState('size', 'B2')">B2</button>
-        </div>
+        <label class="discount-option">
+            <input type="checkbox" id="local-discount" onchange="updateState('isLocalDiscount', this.checked)">
+            <span class="discount-text-wrapper">
+                地域おこしや過疎地・地方活性化のための個人や任意団体の取り組みである
+            </span>
+        </label>
 
-        <div id="print-options-wrapper" class="print-options-wrapper">
-            <div class="section-title">用紙（135kg）</div>
-            <div class="btn-group" id="paper-selector">
-                <button class="select-btn active" onclick="updateState('paper', 'coat')">コート紙</button>
-                <button class="select-btn" onclick="updateState('paper', 'matte')">マットコート紙</button>
-                <button class="select-btn" onclick="updateState('paper', 'fine')">上質紙</button>
-            </div>
+        <label class="discount-option">
+            <input type="checkbox" id="online-discount" onchange="updateState('isOnlineDiscount', this.checked)">
+            <span class="discount-text-wrapper">
+                完全オンラインやりとり（メール、LINE、Zoom）を希望
+            </span>
+        </label>
 
-            <div class="section-title">印刷部数</div>
-            <div class="qty-control">
-                <button class="qty-btn" onclick="stepQuantity(-1)">−</button>
-                <span id="qty-val">10部</span>
-                <button class="qty-btn" onclick="stepQuantity(1)">＋</button>
-            </div>
-        </div>
-
-        <div class="section-title">データ納品オプション</div>
-        <select id="data-delivery" class="select-dropdown" onchange="updateState('dataDelivery', this.value)">
-            <option value="none">希望しない（印刷物のみ納品）</option>
-            <option value="pdf">印刷用PDFデータをお渡し</option>
-            <option value="ai">Illustratorデータ（アウトライン済）</option>
-            <option value="ai_edit">Illustratorデータ（編集可能）</option>
-        </select>
-
-        <div class="price-display-wrapper">
-            <div class="price-label">概算費用（税込）</div>
-            <div class="price-display">
-                ¥<span id="final-price">0</span><span class="price-suffix">〜</span>
-            </div>
-            
-            <label class="discount-option">
-                <input type="checkbox" id="local-discount" onchange="updateState('isLocalDiscount', this.checked)">
-                <span class="discount-text-wrapper">
-                    地域おこしや過疎地・地方活性化のための個人や任意団体の取り組みである
-                </span>
-            </label>
-
-            <label class="discount-option">
-                <input type="checkbox" id="online-discount" onchange="updateState('isOnlineDiscount', this.checked)">
-                <span class="discount-text-wrapper">
-                    完全オンラインやりとり（メール、LINE、Zoom）を希望
-                </span>
-            </label>
-
-            <div class="price-note-box">
-                <div class="price-note-title">※以下の要因により、実際の金額は変動する場合がございます。</div>
-                <ul class="price-note-list">
-                    <li>特殊な用紙・サイズへの変更や、特殊加工（PP加工、箔押しなど）</li>
-                    <li>お急ぎの対応（特急料金）</li>
-                    <li>デザインの修正回数や、複雑なイラスト・図表作成などの工数</li>
-                </ul>
-                <div class="price-note-footer">
-                    詳細はお打ち合わせ後に、改めて正式なお見積もりをご案内いたします。
-                </div>
-            </div>
-        </div>
-
-        <div class="cta-wrapper">
-            <div class="cta-title">お見積もり・ご相談はこちら</div>
-            <div class="cta-text">
-                「こんなデザインできる？」「まずはざっくり相談したい」など、<br>
-                公式LINEまたはInstagramのDMより、お気軽にお問い合わせください。
-            </div>
-            <div class="cta-buttons">
-                <a href="https://lin.ee/1WHsHXo" target="_blank" rel="noopener noreferrer" class="cta-btn cta-line">LINEで相談する</a>
-                <a href="https://www.instagram.com/meihoshuppan/" target="_blank" rel="noopener noreferrer" class="cta-btn cta-insta">Instagramで相談する</a>
+        <div class="price-note-box">
+            <div class="price-note-title">※以下の要因により、実際の金額は変動する場合がございます。</div>
+            <ul class="price-note-list">
+                <li>特殊な用紙・サイズへの変更や、特殊加工（PP加工、箔押しなど）</li>
+                <li>お急ぎの対応（特急料金）</li>
+                <li>デザインの修正回数や、複雑なイラスト・図表作成などの工数</li>
+            </ul>
+            <div class="price-note-footer">
+                詳細はお打ち合わせ後に、改めて正式なお見積もりをご案内いたします。
             </div>
         </div>
     </div>
+
+    <div class="cta-wrapper">
+        <div class="cta-title">お見積もり・ご相談はこちら</div>
+        <div class="cta-text">
+            「こんなデザインできる？」「まずはざっくり相談したい」など、<br>
+            公式LINEまたはInstagramのDMより、お気軽にお問い合わせください。
+        </div>
+        <div class="cta-buttons">
+            <a href="https://lin.ee/1WHsHXo" target="_blank" rel="noopener noreferrer" class="cta-btn cta-line">LINEで相談する</a>
+            <a href="https://www.instagram.com/meihoshuppan/" target="_blank" rel="noopener noreferrer" class="cta-btn cta-insta">Instagramで相談する</a>
+        </div>
+    </div>
+
 </div>
 
 <script src="script.js"></script>
