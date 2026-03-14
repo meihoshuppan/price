@@ -5,6 +5,7 @@
   --font-jp: 'Zen Kaku Gothic New', "游ゴシック Medium", "游ゴシック体", "Yu Gothic Medium", YuGothic, "ヒラギノ角ゴ ProN", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
   --font-en: 'Jost', 'Zen Kaku Gothic New', "游ゴシック Medium", "游ゴシック体", "Yu Gothic Medium", YuGothic, "ヒラギノ角ゴ ProN", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
 
+  /* カラーパレット */
   --bg-color: #faf9f7; 
   --text-main: #33322e; 
   --text-light: #7a7770;
@@ -16,6 +17,7 @@
 
 body { 
   font-family: var(--font-en); 
+  padding: 60px 20px; 
   background-color: var(--bg-color); 
   color: var(--text-main); 
   margin: 0;
@@ -23,105 +25,17 @@ body {
   line-height: 1.6;
 }
 
-/* ==========================================
-   ▼ モーダル全体＆開くボタンのスタイル
-   ========================================== */
-.open-modal-btn {
-  background-color: var(--accent-color);
-  color: var(--white);
-  border: none;
-  padding: 16px 32px;
-  font-size: 1.1rem;
-  font-family: var(--font-jp);
-  font-weight: 700;
-  border-radius: 40px;
-  cursor: pointer;
-  transition: all 0.3s;
-  box-shadow: 0 4px 12px rgba(0,146,180,0.3);
-}
-.open-modal-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0,146,180,0.4);
-}
-
-.modal-overlay {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-color: rgba(0, 0, 0, 0.6);
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
-  padding: 20px; /* スマホ時の余白 */
-  box-sizing: border-box;
-}
-.modal-overlay.active {
-  opacity: 1;
-  visibility: visible;
-}
-
-.close-modal-btn {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  background: var(--active-bg);
-  border: none;
-  font-size: 24px;
-  color: var(--text-light);
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
-  z-index: 10;
-}
-.close-modal-btn:hover {
-  background-color: #e2dfd8;
-  color: var(--text-main);
-}
-
-/* ==========================================
-   ▼ 計算ツール本体（モーダルの中身）
-   ========================================== */
+/* メインコンテナ */
 .calculator { 
-  position: relative;
-  width: 100%;
   max-width: 640px; 
+  margin: auto; 
   background: var(--white); 
   padding: 48px 40px; 
-  border-radius: 8px; 
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2); 
-  /* 画面より長い場合は内部でスクロールさせる */
-  max-height: 90vh;
-  overflow-y: auto; 
-  transform: translateY(20px);
-  transition: transform 0.3s ease;
-  box-sizing: border-box;
-}
-.modal-overlay.active .calculator {
-  transform: translateY(0);
+  border-radius: 4px; 
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02); 
 }
 
-/* ツール内のスクロールバーを綺麗にする(Chrome等) */
-.calculator::-webkit-scrollbar {
-  width: 8px;
-}
-.calculator::-webkit-scrollbar-track {
-  background: var(--bg-color);
-  border-radius: 8px;
-}
-.calculator::-webkit-scrollbar-thumb {
-  background: #ccc;
-  border-radius: 8px;
-}
-
-/* --- 以下、既存のツールデザインそのまま --- */
 h2 {
   text-align: center;
   font-size: 1.5rem;
@@ -130,7 +44,6 @@ h2 {
   margin-bottom: 40px;
   letter-spacing: 0.1em;
   color: var(--text-main);
-  padding-right: 30px; /* 閉じるボタンと被らないように */
 }
 
 .section-title { 
@@ -149,6 +62,7 @@ h2 {
   flex-wrap: wrap; 
 }
 
+/* 選択ボタン */
 .select-btn { 
   flex: 1; 
   min-width: calc(25% - 8px); 
@@ -175,6 +89,7 @@ h2 {
   border-color: var(--accent-color); 
 }
 
+/* プルダウンのスタイル */
 .select-dropdown {
   width: 100%;
   padding: 14px 16px;
@@ -200,6 +115,7 @@ h2 {
   box-shadow: 0 0 0 2px rgba(0, 146, 180, 0.1); 
 }
 
+/* 部数コントロール */
 .qty-control { 
   display: inline-flex; 
   align-items: center; 
@@ -238,9 +154,17 @@ h2 {
   color: var(--text-main); 
 }
 
-.print-options-wrapper { transition: opacity 0.4s ease; }
-.disabled-section { opacity: 0.3; pointer-events: none; user-select: none; }
+/* 無効化（グレーアウト）時 */
+.print-options-wrapper {
+  transition: opacity 0.4s ease;
+}
+.disabled-section {
+  opacity: 0.3;
+  pointer-events: none;
+  user-select: none;
+}
 
+/* 金額表示エリア */
 .price-display-wrapper {
   margin-top: 40px;
   padding-top: 32px;
@@ -274,13 +198,14 @@ h2 {
   margin-left: 4px;
 }
 
+/* 割引オプション（オレンジ系） */
 .discount-option {
   display: inline-flex;
   align-items: flex-start; 
   justify-content: flex-start;
   background-color: #fff8eb; 
   padding: 16px 20px;
-  margin-top: 16px;
+  margin-top: 16px; /* 価格との間隔 */
   border-radius: 4px;
   border: 1px solid #f5c277; 
   cursor: pointer;
@@ -292,8 +217,13 @@ h2 {
   width: 100%; 
   box-sizing: border-box;
 }
-.discount-option:hover { background-color: #ffeed4; }
-.discount-option + .discount-option { margin-top: 6px; }
+.discount-option:hover {
+  background-color: #ffeed4; 
+}
+/* 2つ目以降の割引オプションのマージンを狭くする */
+.discount-option + .discount-option {
+  margin-top: 6px; 
+}
 
 .discount-option input[type="checkbox"] {
   margin-right: 12px;
@@ -304,8 +234,12 @@ h2 {
   cursor: pointer;
   flex-shrink: 0;
 }
-.discount-text-wrapper { line-height: 1.5; font-weight: 500; }
+.discount-text-wrapper {
+    line-height: 1.5; 
+    font-weight: 500;
+}
 
+/* 注記のスタイル（リスト形式） */
 .price-note-box {
   margin-top: 24px;
   text-align: left;
@@ -329,7 +263,9 @@ h2 {
   color: var(--text-light);
   line-height: 1.6;
 }
-.price-note-list li { margin-bottom: 4px; }
+.price-note-list li {
+  margin-bottom: 4px;
+}
 .price-note-footer {
    font-family: var(--font-jp);
    font-size: 0.8rem;
@@ -338,6 +274,7 @@ h2 {
    font-weight: 500;
 }
 
+/* CTAセクションのスタイル */
 .cta-wrapper {
   margin-top: 48px;
   padding: 32px 24px;
@@ -382,19 +319,28 @@ h2 {
   transform: translateY(-2px);
   box-shadow: 0 6px 15px rgba(0,0,0,0.15);
 }
-.cta-line { background-color: #06C755; }
-.cta-line:hover { background-color: #05b34c; }
-.cta-insta { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
-.cta-insta:hover { opacity: 0.9; }
+.cta-line {
+  background-color: #06C755;
+}
+.cta-line:hover {
+  background-color: #05b34c;
+}
+.cta-insta {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+}
+.cta-insta:hover {
+  opacity: 0.9;
+}
 
 /* スマホ対応 */
 @media (max-width: 480px) {
-  .calculator { padding: 40px 20px 32px; } /* ×ボタンの分少し上を空ける */
+  .calculator { padding: 32px 20px; }
   .select-btn { min-width: calc(50% - 4px); }
   .price-display { font-size: 2.8rem; }
   .price-suffix { font-size: 1.4rem; }
-  .discount-option { font-size: 0.85rem; padding: 12px 16px; }
+  .discount-option { font-size: 0.85rem; padding: 12px 16px; align-items: flex-start;}
   .discount-option input[type="checkbox"] { margin-top: 2px;} 
+  .discount-option + .discount-option { margin-top: 6px; }
   .cta-buttons { flex-direction: column; }
   .cta-btn { width: 100%; min-width: auto; box-sizing: border-box; }
 }
